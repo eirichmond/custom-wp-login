@@ -154,6 +154,9 @@ class SQ1_Custom_Login {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'sq1_custom_login_settings_init' );
+		$this->loader->add_action( 'admin_menu', $plugin_admin, 'sq1_custom_login_settings' );
+
 	}
 
 	/**
@@ -171,6 +174,7 @@ class SQ1_Custom_Login {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 		$this->loader->add_action( 'login_head', $plugin_public, 'hft_custom_login_logo' );
+
 
 	}
 
