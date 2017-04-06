@@ -1,3 +1,3 @@
-## Custom WordPress Login
-# Intro
+# Custom WordPress Login
+## Intro
 This changes the appearance of the login page
