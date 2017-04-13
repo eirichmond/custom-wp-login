@@ -157,6 +157,8 @@ class SQ1_Custom_Login {
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'sq1_custom_login_settings_init' );
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'sq1_custom_login_settings' );
 
+		$this->loader->add_action( 'admin_print_scripts-settings_page_custom-login-settings', $plugin_admin, 'sq1_custom_login_admin_scripts' );
+
 	}
 
 	/**

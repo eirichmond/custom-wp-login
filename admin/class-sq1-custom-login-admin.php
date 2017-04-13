@@ -102,7 +102,7 @@ class SQ1_Custom_Login_Admin {
  
 
 	public function sq1_custom_login_settings() {
-	    add_submenu_page(
+	    $page = add_submenu_page(
 	        'options-general.php',
 	        'Custom Login',
 	        'Custom Login',
@@ -110,8 +110,20 @@ class SQ1_Custom_Login_Admin {
 	        'custom-login-settings',
 	        array($this, 'sq1_custom_login_settings_page_callback')
 	    );
+	    
 	}
-	 
+	
+	public function sq1_custom_login_admin_scripts() {
+		
+		wp_enqueue_script( $this->sq1_custom_name.'-admin-settings', plugin_dir_url( __FILE__ ) . 'js/sq1-custom-login-admin-settings.js', array( 'jquery' ), $this->version, false );
+		
+		$login_logo_attachment_post_id = array('login_logo_attachment_post_id' => get_option( 'media_selector_attachment_id', 0 ));
+		
+		wp_localize_script( $this->sq1_custom_name.'-admin-settings', 'object_name', $login_logo_attachment_post_id );
+
+
+	}
+	
 	public function sq1_custom_login_settings_page_callback() {
 		
 		// check user capabilities
@@ -130,9 +142,31 @@ class SQ1_Custom_Login_Admin {
 		 
 		 // show error/update messages
 		 settings_errors( 'sq1_custom_login_messages' );
+		 
+		 
+		 
 		
 	    echo '<div class="wrap"><div id="icon-tools" class="icon32"></div>';
 	        echo '<h2>Custom Login</h2>';
+	        
+	// Save attachment ID
+	if ( isset( $_POST['submit_image_selector'] ) && isset( $_POST['image_attachment_id'] ) ) :
+		update_option( 'media_selector_attachment_id', absint( $_POST['image_attachment_id'] ) );
+	endif;
+
+	wp_enqueue_media();
+
+	?><form method='post'>
+		<div class='image-preview-wrapper'>
+			<img id='image-preview' src='<?php echo wp_get_attachment_url( get_option( 'media_selector_attachment_id' ) ); ?>' height='100'>
+		</div>
+		<input id="upload_image_button" type="button" class="button" value="<?php _e( 'Upload image' ); ?>" />
+		<input type='hidden' name='image_attachment_id' id='image_attachment_id' value='<?php echo get_option( 'media_selector_attachment_id' ); ?>'>
+		<input type="submit" name="submit_image_selector" value="Save" class="button-primary">
+	</form><?php
+	        
+	        
+/*
 	        echo '<form action="options.php" method="post" enctype="multipart/form-data">';
 				 // output security fields for the registered setting "wporg"
 				 settings_fields( 'sq1_custom_login' );
@@ -143,10 +177,13 @@ class SQ1_Custom_Login_Admin {
 				 submit_button( 'Save Settings' );
 				 
 			echo '</form>';
+*/
 
 	    echo '</div>';
 	    
+
 	}
+	
 	
 	/**
 	 * custom option and settings

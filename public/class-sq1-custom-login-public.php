@@ -102,10 +102,13 @@ class SQ1_Custom_Login_Public {
 
 	// @TODO refactor to pull from media lib and fall back to this
 	public function hft_custom_login_logo() {
-		$options = get_option( 'sq1_custom_login_options' );
-		if (!empty($options['sq1_custom_login_image'])) {
-			$login_logo = $options['sq1_custom_login_image'];
-		    echo '<style type="text/css">.login h1 a { background-image: url('.$login_logo.') !important; background-size: 100%; }</style>';
+		$login_logo_attachment_id = get_option( 'media_selector_attachment_id' );
+
+		if (!empty($login_logo_attachment_id)) {
+			$login_logo = wp_get_attachment_image_src( $login_logo_attachment_id, 'full' );
+			$login_logo_scr = $login_logo[0];
+
+		    echo '<style type="text/css">.login h1 a { background-image: url('.$login_logo_scr.') !important; background-size: 100%; }</style>';
 		} else {
 		    echo '<style type="text/css">.login h1 a { background-image: url('.plugin_dir_url( __FILE__ ) . '/images/custom-login-logo.png) !important; background-size: 100%; }</style>';
 		}
